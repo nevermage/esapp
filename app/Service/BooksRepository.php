@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class BooksRepository implements SearchRepository
 {
-    public static function search(string $query = ''): Collection
+    public function search(string $query = ''): Collection
     {
         return Book::query()
             ->where('title', 'like', "%{$query}%")

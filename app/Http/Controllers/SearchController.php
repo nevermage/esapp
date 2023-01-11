@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Service\BooksRepository;
+use App\Service\SearchRepository;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public static function getResults(Request $request)
+    public function getResults(Request $request, SearchRepository $repository)
     {
-        $books = BooksRepository::search($request->get('query'));
+//        $repository = new BooksRepository();
+        $books = $repository->search($request->get('query'));
 
         return view('booksList', ['books' => $books]);
     }

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\SearchController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,10 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return BookController::getAll();
-});
+Route::get('/', [BookController::class, 'getAll']);
 
-Route::get('/search', function (Request $request) {
-    return SearchController::getResults($request);
-});
+Route::get('search', [SearchController::class, 'getResults']);
