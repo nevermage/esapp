@@ -19,11 +19,10 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(SearchRepository::class, function () {
-            // Это полезно, если мы хотим выключить наш кластер
-            // или при развертывании поиска на продакшене
             if (!config('services.search.enabled')) {
                 return new BooksRepository();
             }
+
             return new ElasticsearchRepository(
                 $this->app->make(Client::class)
             );
@@ -34,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function bindSearchClient()
     {
-        $this->app->bind(Client::class, function ($app) {
+        $this->app->bind(Client::class, function () {
             return ClientBuilder::create()
                 ->setHosts(config('services.search.hosts'))
                 ->build();

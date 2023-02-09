@@ -20,44 +20,32 @@ class ElasticsearchRepository implements SearchRepository
     public function search(string $query = ''): Collection
     {
         $items = $this->searchOnElasticsearch($query);
+
         return $this->buildCollection($items);
     }
 
     private function searchOnElasticsearch(string $query = ''): array
     {
         $model = new Book();
-        $s = [
-            'index' => $model->getSearchIndex(),
-            'type' => $model->getSearchType(),
-            'body' => [
-                'query' => [
-                    'multi_match' => [
-                        'fields' => ['title', 'description'],
-                        'query' => $query,
-                    ],
-                ],
-            ],
-        ];
 
-        $items = $this->elasticsearch->search([
+        return $this->elasticsearch->search([
             'index' => $model->getSearchIndex(),
             'type' => $model->getSearchType(),
             'body' => [
                 'query' => [
                     'multi_match' => [
-                        'fields' => ['title', 'description'],
+                        'fields' => ['title^5', 'description'],
                         'query' => $query,
                     ],
                 ],
-            ],
+            ]
         ]);
-
-        return $items;
     }
 
     private function buildCollection(array $items): Collection
     {
         $ids = Arr::pluck($items['hits']['hits'], '_id');
+
         return Book::findMany($ids)
             ->sortBy(function ($book) use ($ids) {
                 return array_search($book->getKey(), $ids);
