@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Models\Book;
 //use Elasticsearch\Client;
-use Elastic\Elasticsearch\Client;
+use Elasticsearch\Client;
 
 class ElasticsearchObserver
 {
