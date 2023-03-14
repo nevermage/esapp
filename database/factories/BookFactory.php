@@ -15,6 +15,7 @@ class BookFactory extends Factory
     {
         return [
             'title' => $this->faker->name(),
+            'genre' => $this->faker->randomElement(['Adventure', 'Detective', 'Drama', 'Fantasy']),
             'description' => $this->faker->text(),
         ];
     }

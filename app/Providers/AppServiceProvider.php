@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Service\BooksRepository;
-use App\Service\ElasticsearchRepository;
-use App\Service\SearchRepository;
+use App\Service\SqlSearchService;
+use App\Service\ElasticsearchService;
+use App\Service\SearchInterface;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\ServiceProvider;
@@ -18,17 +18,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(SearchRepository::class, function () {
-            if (!config('services.search.enabled')) {
-                return new BooksRepository();
+        $this->bindSearchRepository();
+        $this->bindSearchClient();
+    }
+
+    private function bindSearchRepository()
+    {
+        $this->app->bind(SearchInterface::class, function () {
+            if (config('services.search.enabled')) {
+                return new ElasticsearchService(
+                    $this->app->make(Client::class)
+                );
             }
 
-            return new ElasticsearchRepository(
-                $this->app->make(Client::class)
-            );
+            return new SqlSearchService();
         });
-
-        $this->bindSearchClient();
     }
 
     private function bindSearchClient()

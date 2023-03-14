@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Models\Book;
 use Illuminate\Database\Eloquent\Collection;
 
-class BooksRepository implements SearchRepository
+class SqlSearchService implements SearchInterface
 {
     public function search(string $query = ''): Collection
     {

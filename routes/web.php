@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [BookController::class, 'getAll']);
-
-Route::get('search', [SearchController::class, 'getResults']);
-
-Route::get('zxc', [SearchController::class, 'compareResults']);
+Route::get('/', [BookController::class, 'index']);

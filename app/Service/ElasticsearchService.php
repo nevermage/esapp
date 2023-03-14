@@ -7,7 +7,7 @@ use Elasticsearch\Client;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 
-class ElasticsearchRepository implements SearchRepository
+class ElasticsearchService implements SearchInterface
 {
     /** @var Client */
     private $elasticsearch;
@@ -29,16 +29,18 @@ class ElasticsearchRepository implements SearchRepository
         $model = new Book();
 
         return $this->elasticsearch->search([
-            'index' => $model->getSearchIndex(),
-            'type' => $model->getSearchType(),
+            'index' => $model->getTable(),
+            'type' => $model->getTable(),
             'body' => [
                 'query' => [
                     'multi_match' => [
-                        'fields' => ['title^5', 'description'],
-                        'query' => $query,
-                    ],
+                        'fields' => ['title^5', 'genre', 'description'],
+                        'query' => "$query",
+                        "fuzziness" => 3,
+                    ]
                 ],
-            ]
+            ],
+            'size' => 50
         ]);
     }
 

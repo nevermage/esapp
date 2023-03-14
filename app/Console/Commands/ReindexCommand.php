@@ -44,20 +44,17 @@ class ReindexCommand extends Command
      */
     public function handle()
     {
-        $this->info('Indexing all books. This might take a while...');
+        $this->info('Reindex stared');
 
-        foreach (Book::cursor() as $book)
-        {
+        foreach (Book::cursor() as $book) {
             $this->elasticsearch->index([
-                'index' => $book->getSearchIndex(),
-                'type' => $book->getSearchType(),
+                'index' => $book->getTable(),
+                'type' => $book->getTable(),
                 'id' => $book->getKey(),
-                'body' => $book->toSearchArray(),
+                'body' => $book->toArray(),
             ]);
-
-            $this->output->write('.');
         }
 
-        $this->info(PHP_EOL . 'Done!');
+        $this->info('Reindex finished');
     }
 }

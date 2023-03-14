@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,7 @@ Route::post('/books/create', function (Request $request) {
     return BookController::create($request);
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('search')->group(function () {
+    Route::get('/', [SearchController::class, 'getResults']);
+    Route::get('/compare', [SearchController::class, 'compareResults']);
 });
-

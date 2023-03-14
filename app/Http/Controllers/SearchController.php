@@ -2,36 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\BooksRepository;
-use App\Service\ElasticsearchRepository;
-use App\Service\SearchRepository;
+use App\Service\SqlSearchService;
+use App\Service\ElasticsearchService;
+use App\Service\SearchInterface;
+use Elasticsearch\Client;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public function getResults(Request $request, SearchRepository $repository)
+    public function getResults(Request $request, SearchInterface $repository)
     {
-        $books = $repository->search($request->get('query'));
+        $query = $request->get('query') ?? '';
+        $books = $repository->search($query);
 
         return view('booksList', ['books' => $books]);
     }
 
-    public function compareResults(Request $request)
+    public function compareResults(Request $request, Client $client)
     {
         $query = $request->get('query');
 
-        $booksRepository = new BooksRepository();
+        $booksRepository = new SqlSearchService();
         $dbResults = $booksRepository->search($query);
 
-        $elasticSearchRepository = new ElasticsearchRepository(app()->make(\Elasticsearch\Client::class));
+        $elasticSearchRepository = new ElasticsearchService($client);
         $esResults = $elasticSearchRepository->search($query);
 
         dump([
-            'db' => [
+            'database' => [
                 'count' => count($dbResults),
                 'results' => $dbResults->toArray()
             ],
-            'es' => [
+            'elastica' => [
                 'count' => count($esResults),
                 'results' => $esResults->toArray()
             ]
