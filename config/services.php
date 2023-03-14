@@ -33,6 +33,7 @@ return [
     'search' => [
         'enabled' => env('ELASTICSEARCH_ENABLED', false),
         'hosts' => explode(',', env('ELASTICSEARCH_HOSTS')),
+        'fuzziness' => env('ELASTICSEARCH_FUZZINESS', 2),
     ],
 
 ];

@@ -36,7 +36,7 @@ class ElasticsearchService implements SearchInterface
                     'multi_match' => [
                         'fields' => ['title^5', 'genre', 'description'],
                         'query' => "$query",
-                        "fuzziness" => 3,
+                        "fuzziness" => config('services.search.fuzziness'),
                     ]
                 ],
             ],
