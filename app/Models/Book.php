@@ -9,6 +9,13 @@ class Book extends Model
 {
     use HasFactory;
 
+    const GENRES = [
+        'Adventure',
+        'Detective',
+        'Drama',
+        'Fantasy'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

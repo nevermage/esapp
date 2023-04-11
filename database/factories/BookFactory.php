@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BookFactory extends Factory
@@ -15,7 +16,7 @@ class BookFactory extends Factory
     {
         return [
             'title' => $this->faker->name(),
-            'genre' => $this->faker->randomElement(['Adventure', 'Detective', 'Drama', 'Fantasy']),
+            'genre' => $this->faker->randomElement(Book::GENRES),
             'description' => $this->faker->text(),
         ];
     }
