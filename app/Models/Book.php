@@ -9,6 +9,8 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $table = 'book';
+
     const GENRES = [
         'Adventure',
         'Detective',

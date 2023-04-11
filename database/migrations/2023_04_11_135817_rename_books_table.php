@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class RenameBooksTable extends Migration
 {
@@ -12,7 +13,7 @@ class RenameBooksTable extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE books RENAME TO book');
+        Schema::rename('books', 'book');
     }
 
     /**
@@ -22,6 +23,6 @@ class RenameBooksTable extends Migration
      */
     public function down()
     {
-        DB::statement('ALTER TABLE book RENAME TO books');
+        Schema::rename('book', 'books');
     }
 }
