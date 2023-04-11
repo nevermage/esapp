@@ -6,11 +6,16 @@
                 <div class="form-group">
                     <input
                         id="searchQuery"
-                        oninput="search()"
+                        onchange="search()"
+                        onkeyup="this.onchange();"
+                        onpaste="this.onchange();"
+                        oncut="this.onchange();"
+                        oninput="this.onchange();"
                         type="text"
                         class="form-control"
                         placeholder="Search..."
                     />
+                </div>
                 </div>
             </div>
             <br>
@@ -25,9 +30,7 @@
 
     async function search() {
         let query = searchQuery.value;
-        if (query === '' || query === ' ') return;
-        let results = await getResults(query);
-        document.getElementById('booksContainer').innerHTML = results;
+        document.getElementById('booksContainer').innerHTML = await getResults(query);
     }
 
     async function getResults(query) {
