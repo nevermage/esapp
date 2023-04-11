@@ -7,7 +7,6 @@
                     <input
                         id="searchQuery"
                         onchange="search()"
-                        onkeyup="this.onchange();"
                         onpaste="this.onchange();"
                         oncut="this.onchange();"
                         oninput="this.onchange();"
