@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Service\BookSearchService;
 use App\Service\SqlSearchService;
 use App\Service\ElasticsearchService;
 use App\Service\SearchInterface;
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(SearchInterface::class, function () {
             if (config('services.search.enabled')) {
-                return new ElasticsearchService(
+                return new BookSearchService(
                     $this->app->make(Client::class)
                 );
             }

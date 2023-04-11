@@ -7,7 +7,7 @@ use Elasticsearch\Client;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 
-class ElasticsearchService implements SearchInterface
+class BookSearchService implements SearchInterface
 {
     /** @var Client */
     private $elasticsearch;
@@ -19,12 +19,12 @@ class ElasticsearchService implements SearchInterface
 
     public function search(string $query = ''): Collection
     {
-        $items = $this->searchOnElasticsearch($query);
+        $items = $this->getElasticResults($query);
 
         return $this->buildCollection($items);
     }
 
-    private function searchOnElasticsearch(string $query = ''): array
+    private function getElasticResults(string $query = ''): array
     {
         $model = new Book();
 
@@ -35,7 +35,7 @@ class ElasticsearchService implements SearchInterface
                 'query' => [
                     'multi_match' => [
                         'fields' => ['title^5', 'genre', 'description'],
-                        'query' => "$query",
+                        'query' => $query,
                         "fuzziness" => config('services.search.fuzziness'),
                     ]
                 ],
@@ -48,9 +48,6 @@ class ElasticsearchService implements SearchInterface
     {
         $ids = Arr::pluck($items['hits']['hits'], '_id');
 
-        return Book::findMany($ids)
-            ->sortBy(function ($book) use ($ids) {
-                return array_search($book->getKey(), $ids);
-            });
+        return Book::findMany($ids);
     }
 }
