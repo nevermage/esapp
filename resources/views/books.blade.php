@@ -34,7 +34,7 @@
     }
 
     async function getResults(query) {
-        const response = await fetch('http://elastic.docker/api/search?query=' + query);
+        const response = await fetch('http://elastic.docker/api/books/search?query=' + query);
         return await response.text();
     }
 </script>
