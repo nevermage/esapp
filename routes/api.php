@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\SearchController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,11 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/books/create', function (Request $request) {
-    return BookController::create($request);
-});
-
-Route::prefix('search')->group(function () {
-    Route::get('/', [SearchController::class, 'getResults']);
-    Route::get('/compare', [SearchController::class, 'compareResults']);
+Route::prefix('/books')->group(function () {
+    Route::get('/search', [BookController::class, 'search']);
+    Route::get('/search/compare', [BookController::class, 'searchWithComparison']);
 });

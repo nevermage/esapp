@@ -6,14 +6,14 @@ use Elasticsearch\Client;
 use App\Models\Book;
 use Illuminate\Console\Command;
 
-class ReindexCommand extends Command
+class BookReindexCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'search:reindex';
+    protected $signature = 'search:book:reindex';
 
     /**
      * The console command description.
