@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Service\ElasticsearchService;
+use App\Service\BookSearchService;
 use App\Service\SearchInterface;
 use App\Service\SqlSearchService;
 use Elasticsearch\Client;
@@ -51,7 +51,7 @@ class BookController extends Controller
         $booksRepository = new SqlSearchService();
         $dbResults = $booksRepository->search($query);
 
-        $elasticSearchRepository = new ElasticsearchService($client);
+        $elasticSearchRepository = new BookSearchService($client);
         $esResults = $elasticSearchRepository->search($query);
 
         return [
