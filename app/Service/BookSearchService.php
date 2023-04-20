@@ -5,12 +5,11 @@ namespace App\Service;
 use App\Models\Book;
 use Elasticsearch\Client;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Arr;
 
 class BookSearchService implements SearchInterface
 {
     /** @var Client */
-    private $elasticsearch;
+    private Client $elasticsearch;
 
     public function __construct(Client $elasticsearch)
     {
@@ -21,7 +20,7 @@ class BookSearchService implements SearchInterface
     {
         $items = $this->getElasticResults($query);
 
-        return $this->buildCollection($items);
+        return Book::buildCollection($items);
     }
 
     private function getElasticResults(string $query = ''): array
@@ -42,12 +41,5 @@ class BookSearchService implements SearchInterface
             ],
             'size' => 50
         ]);
-    }
-
-    private function buildCollection(array $items): Collection
-    {
-        $ids = Arr::pluck($items['hits']['hits'], '_id');
-
-        return Book::findMany($ids);
     }
 }
